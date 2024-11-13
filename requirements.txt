@@ -1,0 +1,11 @@
+# Python 3.9.20
+pandas==2.2.3
+pdfplumber
+pytesserac
+pdf2image
+tqdm
+
+jieba
+rank_bm25
+torch==2.5.1
+transformers==4.46.1
