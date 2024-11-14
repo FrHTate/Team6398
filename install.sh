@@ -1,35 +1,45 @@
 #!/bin/bash
 
-# Define the environment name
-ENV_NAME="myenv"
+# Define environment name and path
+ENV_NAME="test_env"
+ENV_PATH="$HOME/micromamba/envs/$ENV_NAME"
 
-# Specify Python version
-PYTHON_VERSION="python3.9"
+# Initialize micromamba for the current shell
+eval "$(micromamba shell hook -s bash)"  # Replace 'bash' with your shell type if needed (e.g., zsh)
 
-# Check if Python 3.9.20 is installed
-if ! command -v $PYTHON_VERSION &> /dev/null; then
-  echo "$PYTHON_VERSION is not installed. Please install Python 3.9.20."
-  exit 1
+# Check if micromamba is available
+if ! command -v micromamba &> /dev/null; then
+    echo "Error: Micromamba is not available. Ensure it's installed and initialized."
+    exit 1
 fi
 
-# Check if the virtual environment already exists
-if [ ! -d "$ENV_NAME" ]; then
-  # Create a virtual environment with Python 3.9 if it doesn't exist
-  $PYTHON_VERSION -m venv $ENV_NAME
-  echo "Virtual environment created at $ENV_NAME with Python 3.9.20"
+# Create the environment from the YAML file
+echo "Creating Micromamba environment from environment.yml..."
+micromamba create -f environment.yml -y
+
+# Check if the environment was created successfully
+if [ ! -d "$ENV_PATH" ]; then
+    echo "Error: Environment was not created successfully at $ENV_PATH."
+    exit 1
 fi
 
-# Activate the virtual environment
-source $ENV_NAME/bin/activate
-echo "Virtual environment activated"
+# Activate the environment
+echo "Activating the environment..."
+micromamba activate "$ENV_NAME"
 
-# Upgrade pip in the virtual environment
-pip install --upgrade pip
+# Process requirements.txt for valid packages
+if [ -f requirements.txt ]; then
+    # Clean requirements.txt by removing lines with paths or build directories
+    sed -i '/build_artifacts\|tmp\|feedstock_root/d' requirements.txt
 
-# Install regular requirements
-pip install -r requirements.txt
+    # Install packages using pip
+    echo "Installing packages from requirements.txt..."
+    pip install --no-cache-dir -r requirements.txt
+else
+    echo "Error: requirements.txt not found."
+    exit 1
+fi
+echo "Installing flash-attn package..."
+pip install flash-attn==2.6.3 --no-build-isolation
 
-# Install flash-attn with --no-build-isolation
-pip install flash-attn --no-build-isolation
-
-echo "All packages installed successfully in the virtual environment $ENV_NAME"
+echo "Environment recreation completed successfully."
