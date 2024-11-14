@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define environment name and path
-ENV_NAME="test_env"
+ENV_NAME="ai_cup_env"
 ENV_PATH="$HOME/micromamba/envs/$ENV_NAME"
 
 # Initialize micromamba for the current shell
