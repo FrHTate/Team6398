@@ -9,7 +9,7 @@ import Model.retrievers as rt
 
 # import evaluation
 
-# 1. Set parameters for data loading and retrieval
+# 1. Config: Set parameters for data loading and retrieval
 # 1-1. Set paths
 path_to_main = os.path.dirname(os.path.abspath(__file__))
 paths = {
