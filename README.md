@@ -12,7 +12,7 @@
 在初賽中，我們這組的虛擬環境是由 micromamba 所建構。若需要還原我們的環境設定會需要先安裝好 micromamba，並在 CUDA 12.4 之下利用 shell 執行：
 
 ```bash
-{_your_shell_} install.sh
+{your_shell} install.sh
 ```
 
 這段腳本會自動由`enviroment.yml`建立一個新的 micromamba 虛擬環境，環境名稱為 **ai_cup_env**，接著再自動下載`requirements.txt`中的 packages。
