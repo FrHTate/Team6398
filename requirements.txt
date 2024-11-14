@@ -7,7 +7,7 @@ tqdm
 
 jieba
 rank_bm25
-torch
+torch==2.4.0
 transformers
 einops
 ninja 
